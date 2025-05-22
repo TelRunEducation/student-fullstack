@@ -6,19 +6,23 @@ import {useNavigate, useParams} from "react-router-dom";
 import styles from './EditStudent.module.css';
 
 const EditStudent = () => {
-  // todo: use this component for adding new student as well
   const {id} = useParams<{ id: string }>()
+
   const isNewStudent = id === 'null'
+
   const student = useAppSelector(selectedStudent)
+
   const [name, setName] = useState(student?.name)
   const [newId, setNewId] = useState(student?.id)
   const [password, setPassword] = useState(student?.password)
+
   const navigate = useNavigate();
 
   // todo think of isLoading, error, isSuccess
   //const [updateStudent, { isLoading, error, isSuccess }] = useUpdateUserByIdMutation()
   const [updateStudent] = useUpdateStudentByIdMutation()
   const [addStudent] = useAddStudentMutation()
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (isNewStudent) {

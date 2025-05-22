@@ -1,14 +1,33 @@
 .listItem {
+    display: inline-flex;
     height: 30px;
+    width: 100%;
+    padding : 10px;
     border: 1px solid black;
     cursor: pointer;
     align-content: center;
+    justify-content: space-between;
+}
+
+.deleteBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px
 }
 
 .listItem:hover {
-    background-color: lightgray;
+    background-color: lightblue;
+}
+.deleteBtn:hover {
+    background: lightcoral;
+    border: 1px solid darkred;
 }
 
 .header {
     color: #535bf2;
+}
+
+.addStudent {
+    margin-top: 20px;
 }

@@ -31,7 +31,14 @@ export const studentsApi = createApi({
         body: newData
       }),
       invalidatesTags: ['allStudents'],
-    })
+    }),
+    deleteStudent: builder.mutation<Partial<Student>, string>({
+      query: (id) => ({
+        url: `/student/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['allStudents'],
+    }),
   }),
 })
 
@@ -42,4 +49,5 @@ export const {
   useGetStudentByIdQuery,
   useUpdateStudentByIdMutation,
   useAddStudentMutation,
+  useDeleteStudentMutation
 } = studentsApi

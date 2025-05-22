@@ -1,12 +1,17 @@
-import {useGetAllStudentsQuery} from "../store/api/studentApi.ts";
+import {useDeleteStudentMutation, useGetAllStudentsQuery} from "../store/api/studentApi.ts";
 import {useNavigate} from "react-router-dom";
 import RequestError from "./RequestError.tsx";
 import styles from './Studnets.module.css';
+import * as React from "react";
 
 const Students = () => {
   // const {data, error, isLoading} = useGetAllStudentsQuery()
-  const {data, error} = useGetAllStudentsQuery()
+  const {data: students, error} = useGetAllStudentsQuery()
+
+  // const [deleteStudent, { isLoading, isSuccess, isError }] = useDeleteStudentMutation()
+  const [deleteStudent] = useDeleteStudentMutation()
   const navigate = useNavigate()
+
   const handleViewStudentClick = (id: number) => {
     navigate(`/students/${id}`)
   }
@@ -14,18 +19,32 @@ const Students = () => {
     navigate(`/students/edit/${null}`)
   }
 
-  if (!!error) return <RequestError error={error}/>
+  const handleDeleteStudent =
+    (id: number, event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation()
+      deleteStudent(id.toString())
+    }
 
+  if (error) return <RequestError error={error}/>
 
   return (
     <>
       <h2 className={styles.header}>List of Students</h2>
-      {data?.map(student =>
-        <div className={styles.listItem} onClick={() => handleViewStudentClick(student.id)} key={student.id}>
-          {student.name}
-        </div>
-      )}
-      <button onClick={handleAddNewStudentClick}>Add new student</button>
+        {students?.map(student => (
+          <div
+            key={student.id}
+            className={styles.listItem}
+            onClick={() => handleViewStudentClick(student.id)}>
+            <span> {student.name} </span>
+              <button
+                className={styles.deleteBtn}
+                onClick={(event) => handleDeleteStudent(student.id, event)}
+              >
+                Delete
+              </button>
+          </div>
+        ))}
+      <button className={styles.addStudent} onClick={handleAddNewStudentClick}>Add new student</button>
     </>
   );
 }

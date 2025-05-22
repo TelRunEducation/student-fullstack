@@ -9,8 +9,17 @@ export const addStudent = ({id, name, password}) => {
     return true;
 }
 
-export const findStudent = (id) => {
-    return students.get(id)
+export const deleteStudent = (id) => {
+    const studentToDelete = students.get(id)
+    students.delete(id)
+    return studentToDelete;
 }
 
-export const getAllStudents = () => students.values().toArray();
+export const findStudent = (id) => students.get(id)
+
+export const getAllStudents = () => students.values().toArray()
+
+export const getStudentsByName = (name) =>
+  students.values()
+    .toArray()
+    .filter(student => student.name === name)
