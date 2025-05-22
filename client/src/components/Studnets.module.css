@@ -1,0 +1,14 @@
+.listItem {
+    height: 30px;
+    border: 1px solid black;
+    cursor: pointer;
+    align-content: center;
+}
+
+.listItem:hover {
+    background-color: lightgray;
+}
+
+.header {
+    color: #535bf2;
+}
