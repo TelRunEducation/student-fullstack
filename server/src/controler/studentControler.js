@@ -1,5 +1,5 @@
 import * as repo from '../repository/studentRepository.js'
-import {getAllStudents} from "../repository/studentRepository.js";
+import {getAllStudents, getStudentsByName} from "../repository/studentRepository.js";
 
 export const getStudents = (req, res) =>
   res.json(repo.getAllStudents())
@@ -46,9 +46,8 @@ export const addScore = (req, res) => {
   //TODO
 }
 
-export const findByName = (req, res) => {
-  //TODO
-}
+export const findByName = (req, res) =>
+  res.json(repo.getStudentsByName(req.params.name))
 
 export const countByName = (req, res) => {
   //TODO

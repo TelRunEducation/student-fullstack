@@ -1,11 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 const baseUrl = 'http://localhost:8080';
+
+const baseQuery = fetchBaseQuery({ baseUrl })
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 3 })
 
 // Define a service using a base URL and expected endpoints
 export const studentsApi = createApi({
   reducerPath: 'student',
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: baseQueryWithRetry,
   tagTypes: ['student', 'allStudents'],
   endpoints: (builder) => ({
     getAllStudents: builder.query<Student[], void>({
@@ -39,6 +42,11 @@ export const studentsApi = createApi({
       }),
       invalidatesTags: ['allStudents'],
     }),
+    findStudentsByName: builder.query<Student[], string>({
+      query: (name) => ({
+        url: `/student/name/${name}`,
+      }),
+    }),
   }),
 })
 
@@ -49,5 +57,6 @@ export const {
   useGetStudentByIdQuery,
   useUpdateStudentByIdMutation,
   useAddStudentMutation,
-  useDeleteStudentMutation
+  useDeleteStudentMutation,
+  useLazyFindStudentsByNameQuery
 } = studentsApi

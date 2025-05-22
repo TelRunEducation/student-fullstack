@@ -22,4 +22,4 @@ export const getAllStudents = () => students.values().toArray()
 export const getStudentsByName = (name) =>
   students.values()
     .toArray()
-    .filter(student => student.name === name)
+    .filter(student => student.name.toLowerCase() === name.toLowerCase())
