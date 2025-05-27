@@ -15,7 +15,7 @@ const studentSlice = createSlice({
     selectStudent: (state, action) => {
       state.selectedStudent = action.payload
     },
-    clearSelectedStudent: (_state) => {
+    clearSelectedStudent: () => {
       return initialState
     },
   }

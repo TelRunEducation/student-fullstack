@@ -1,11 +1,11 @@
 interface Student {
-  id: number,
+  _id: number,
   name: string,
   password: string,
-  //exams: Exam[]
+  scores: Record<string, number>
 }
 
-type Exam = {
-  name: string;
-  mark: number;
+type Scores = {
+  exam: string,
+  score: number
 }

@@ -66,13 +66,13 @@ const Students = () => {
       {
         source?.map(student => (
         <div
-          key={student.id}
+          key={student._id}
           className={styles.listItem}
-          onClick={() => handleViewStudentClick(student.id)}>
-          <span> {student.name} : {student.id} </span>
+          onClick={() => handleViewStudentClick(student._id)}>
+          <span> {student.name} : {student._id} </span>
           <button
             className={styles.deleteBtn}
-            onClick={(event) => handleDeleteStudent(student.id, event)}
+            onClick={(event) => handleDeleteStudent(student._id, event)}
           >
             Delete
           </button>

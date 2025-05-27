@@ -1,4 +1,4 @@
-import {createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
+import {createApi, fetchBaseQuery, retry} from '@reduxjs/toolkit/query/react'
 
 const baseUrl = 'http://localhost:8080';
 
@@ -19,15 +19,15 @@ export const studentsApi = createApi({
       query: (id) => `/student/${id}`,
       providesTags: ['student'],
     }),
-    updateStudentById: builder.mutation<any, Partial<Student>>({
+    updateStudentById: builder.mutation<Partial<Student>, Partial<Student>>({
       query: (newData) => ({
-        url: `/student/${newData.id}`,
+        url: `/student/${newData._id}`,
         method: 'PATCH',
         body: newData
       }),
       invalidatesTags: ['student', 'allStudents'],
     }),
-    addStudent: builder.mutation<any, Partial<Student>>({
+    addStudent: builder.mutation<Partial<Student>, Partial<Student>>({
       query: (newData) => ({
         url: `/student`,
         method: 'POST',
@@ -47,6 +47,14 @@ export const studentsApi = createApi({
         url: `/student/name/${name}`,
       }),
     }),
+    addScore: builder.mutation<void, {id: number, data: Scores}>({
+      query: ( params: {id: number, data: Scores}  ) => ({
+        url: `/score/student/${params.id}`,
+        method: 'PATCH',
+        body: params.data
+      }),
+      invalidatesTags: ['student'],
+    }),
   }),
 })
 
@@ -58,5 +66,6 @@ export const {
   useUpdateStudentByIdMutation,
   useAddStudentMutation,
   useDeleteStudentMutation,
-  useLazyFindStudentsByNameQuery
+  useLazyFindStudentsByNameQuery,
+  useAddScoreMutation
 } = studentsApi

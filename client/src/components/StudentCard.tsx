@@ -18,8 +18,14 @@ const StudentCard = () => {
   if (error) return <RequestError error={error}></RequestError>
   return (
     <>
-      <div>{student?.name} {student?.id}</div>
-      <NavLink to={`/students/edit/${student?.id}`} onClick={selectStudentHandler}>
+      <div>{student?.name} {student?._id}</div>
+      {student?.scores && Object.entries(student.scores).map(([key, value]) => (
+        <div key={key}>
+          Subject: <span style={{ fontWeight: 'bold' }}>{key}</span>,
+          Score: <span style={{ fontWeight: 'bold' }}>{value}</span>
+        </div>
+      ))}
+      <NavLink to={`/students/edit/${student?._id}`} onClick={selectStudentHandler}>
         Edit Student
       </NavLink>
     </>

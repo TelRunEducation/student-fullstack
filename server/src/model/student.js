@@ -1,6 +1,6 @@
 export class Student {
     constructor(id, name, password) {
-        this.id = id;
+        this._id = id;
         this.name = name;
         this.password = password;
         this.scores = {};

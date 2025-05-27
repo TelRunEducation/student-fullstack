@@ -1,11 +1,12 @@
 import express from "express";
 import {
-    addScore,
-    addStudent, deleteStudent,
-    findByMinScore,
-    findByName,
-    findStudent, getStudents,
-    updateStudent
+  addStudent,
+  deleteStudent,
+  findByName,
+  findStudent,
+  getStudents,
+  updateStudent,
+  addScore
 } from "../controler/studentControler.js";
 
 export const router = express.Router();
@@ -17,7 +18,7 @@ router.delete('/student/:id', deleteStudent)
 router.patch('/student/:id', updateStudent)
 router.patch('/score/student/:id', addScore)
 router.get('/student/name/:name', findByName)
-router.get('/quantity/student/', findStudent)
-router.get('/student/exam/:exam/minScore/:minScore', findByMinScore)
+// router.get('/quantity/student/', findStudent)
+// router.get('/student/exam/:exam/minScore/:minScore', findByMinScore)
 
 export default router;

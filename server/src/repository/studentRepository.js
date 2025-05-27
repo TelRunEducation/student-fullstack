@@ -1,25 +1,40 @@
-import {Student as Student} from "../model/student.js";
-const students = new Map();
+let collection;
 
-export const addStudent = ({id, name, password}) => {
-    if (students.has(id)) {
-        return false;
-    }
-    students.set(id, new Student(id, name, password));
-    return true;
+export function init(db) {
+  collection = db.collection("college");
 }
 
-export const deleteStudent = (id) => {
-    const studentToDelete = students.get(id)
-    students.delete(id)
-    return studentToDelete;
+export const getAllStudents = async () =>
+  await collection.find().toArray()
+
+export const addStudent = async ({_id, name, password}) => {
+  const exists = await collection.findOne({_id});
+  if (exists) {
+    return false;
+  }
+  await collection.insertOne({_id, name, password, scores: {}});
+  return true;
 }
 
-export const findStudent = (id) => students.get(id)
+export const deleteStudent = async (_id) =>
+  await collection.findOneAndDelete({_id})
 
-export const getAllStudents = () => students.values().toArray()
+export const findStudent = async (_id) =>
+  await collection.findOne({_id})
 
-export const getStudentsByName = (name) =>
-  students.values()
-    .toArray()
-    .filter(student => student.name.toLowerCase() === name.toLowerCase())
+export const updateStudent = async (_id, data) =>
+  await collection.findOneAndUpdate(
+    {_id},
+    {$set: data},
+    {returnDocument: 'after'}
+  )
+
+export const addScore = async (_id, {exam, score}) =>
+  await collection.findOneAndUpdate(
+    {_id},
+    {$set: {[`scores.${exam}`]: score}}
+  )
+
+
+export const getStudentsByName = async (name) =>
+  await collection.find({name}).toArray()

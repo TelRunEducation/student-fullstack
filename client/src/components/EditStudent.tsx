@@ -4,6 +4,7 @@ import {type FormEvent, useState} from "react";
 import {useAddStudentMutation, useUpdateStudentByIdMutation} from "../store/api/studentApi.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import styles from './EditStudent.module.css';
+import AddScore from "./AddScore.tsx";
 
 const EditStudent = () => {
   const {id} = useParams<{ id: string }>()
@@ -13,8 +14,8 @@ const EditStudent = () => {
   const student = useAppSelector(selectedStudent)
 
   const [name, setName] = useState(student?.name)
-  const [newId, setNewId] = useState(student?.id)
-  const [password, setPassword] = useState(student?.password)
+  const [newId, setNewId] = useState(student?._id)
+  const [password, setPassword] = useState('')
 
   const navigate = useNavigate();
 
@@ -23,19 +24,19 @@ const EditStudent = () => {
   const [updateStudent] = useUpdateStudentByIdMutation()
   const [addStudent] = useAddStudentMutation()
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleEditStudent = (e: FormEvent) => {
     e.preventDefault()
     if (isNewStudent) {
-      addStudent({id: newId, name, password})
+      addStudent({_id: newId, name, password})
       navigate('/')
     } else {
-      updateStudent({id: student?.id, name})
-      navigate(`/students/${student?.id}`)
+      updateStudent({_id: student?._id, name, password})
+      navigate(`/students/${student?._id}`)
     }
   }
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleEditStudent}>
         <label>
           Student ID:
           <input
@@ -58,7 +59,7 @@ const EditStudent = () => {
             />
           </label>
         </div>
-        {isNewStudent && <div>
+        <div>
           <label>
             Password:
             <input
@@ -69,9 +70,10 @@ const EditStudent = () => {
             />
           </label>
         </div>
-        }
         <button type="submit">{isNewStudent ? "Add" : "Update"}</button>
       </form>
+      <br/>
+      {!isNewStudent && <AddScore />}
     </>
   )
 };

@@ -1,11 +1,10 @@
 import * as repo from '../repository/studentRepository.js'
-import {getAllStudents, getStudentsByName} from "../repository/studentRepository.js";
 
-export const getStudents = (req, res) =>
-  res.json(repo.getAllStudents())
+export const getStudents = async (req, res) =>
+  res.json(await repo.getAllStudents())
 
-export const addStudent = (req, res) => {
-  const success = repo.addStudent(req.body);
+export const addStudent = async (req, res) => {
+  const success = await repo.addStudent(req.body);
   if (success) {
     res.status(204).send();
   } else {
@@ -13,47 +12,47 @@ export const addStudent = (req, res) => {
   }
 }
 
-export const findStudent = (req, res) => {
-  const student = repo.findStudent(+req.params.id);
+export const findStudent = async (req, res) => {
+  const student = await repo.findStudent(+req.params.id);
   if (student) {
-    const tmp = {...student};
-    delete tmp.password;
-    res.json(tmp);
+    delete student.password;
+    res.json(student);
   } else {
     res.status(404).send();
   }
 }
 
-export const updateStudent = (req, res) => {
-  const student = repo.findStudent(+req.params.id);
+export const updateStudent = async (req, res) => {
+  const student = repo.updateStudent(+req.params.id, req.body);
   if (student) {
-    student.name = req.body.name;
-    res.status(200).send();
+    delete student.scores;
+    res.json(student)
   } else {
     res.status(404).send();
   }
 }
 
-export const deleteStudent = (req, res) => {
-  const deletedStudent = repo.deleteStudent(+req.params.id);
-  console.log(deletedStudent);
+export const deleteStudent = async (req, res) => {
+  const deletedStudent = await repo.deleteStudent(+req.params.id);
   deletedStudent
     ? res.json(deletedStudent)
     : res.status(404).type('text/plain').send();
 }
 
-export const addScore = (req, res) => {
-  //TODO
+export const addScore = async (req, res) => {
+  await repo.addScore(+req.params.id, req.body)
+    ? res.status(204).send()
+    : res.status(404).type('text/plain').send();
 }
 
-export const findByName = (req, res) =>
-  res.json(repo.getStudentsByName(req.params.name))
+export const findByName = async (req, res) =>
+  res.json(await repo.getStudentsByName(req.params.name))
 
-export const countByName = (req, res) => {
-  //TODO
-}
-
-export const findByMinScore = (req, res) => {
-  //TODO
-}
-
+// export const countByName = (req, res) => {
+//   //TODO
+// }
+//
+// export const findByMinScore = (req, res) => {
+//   //TODO
+// }
+//
